@@ -25,7 +25,10 @@ body {
 }
 #app {
 	width: min(95vw, 100rem);
-	margin: 3rem auto;
+	margin: 1rem auto 3rem auto;
+}
+.hint {
+	text-align: center;
 }
 .overlay {
 	--scale: 0;
@@ -44,6 +47,7 @@ body {
 	justify-content: center;
 	gap: 2rem;
 	padding-bottom: 3rem;
+	margin-top: 2rem;
 }
 .card {
 	width: 100%;
@@ -70,9 +74,11 @@ body {
 }
 .add-note-btn {
 	font-size: 4rem;
-	color: hsl(100, 50%, 50%);
 	width: 100%;
 	height: 100%;
+}
+.fa-plus {
+	color: hsl(100, 50%, 50%);
 }
 .add-note-btn > i {
 	pointer-events: none;
@@ -212,7 +218,7 @@ body {
 	--padding-x: 1rem;
 	--padding-y: 0.5rem;
 	--scale: 0;
-	width: min(60vw, 50rem);
+	width: min(70vw, 55rem);
 	height: 30rem;
 	display: flex;
 	flex-direction: column;
