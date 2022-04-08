@@ -1,4 +1,5 @@
-import { addGlobalEventListener, querySelector, formatDateAndTime, save } from './utils/utils.js'
+import { addGlobalEventListener, querySelector, formatDateAndTime, save } from './utils/utils'
+import './styles/main.css'
 
 type note = {
     title: string
@@ -7,7 +8,6 @@ type note = {
     createdAt: string
     updatedAt: string
 }
-
 
 const LOCAL_STORAGE_NOTES_KEY: string = 'notesapp.notes.list'
 let notes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NOTES_KEY) || '[]')
