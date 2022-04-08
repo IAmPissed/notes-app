@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- Fontawesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+			integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<!-- Stylesheet -->
+		<link rel="stylesheet" href="./css/styles.css" />
+		<script src="./JS/app.js" type="module"></script>
+		<title>Notes App</title>
+	</head>
+	<body>
+		<div id="app">
+			<div class="overlay" data-overlay></div>
+
+			<section class="notes-list" data-notes-list>
+				<div class="card add-note">
+					<button class="btn add-note-btn" data-add-note-button>
+						<i class="fa-solid fa-plus"></i>
+					</button>
+				</div>
+			</section>
+
+			<section class="modal add-note-modal" data-add-note-modal>
+				<button class="btn close-btn" data-close-modal-button>&times;</button>
+				<input type="text" placeholder="note title..." data-note-title-input />
+				<textarea
+					id=""
+					placeholder="note content..."
+					data-note-content-input
+				></textarea>
+				<button class="btn save-btn" data-save-note-button>Save</button>
+			</section>
+
+			<section class="modal note-preview-modal" data-note-preview-modal>
+				<button class="btn close-btn" data-close-modal-button>&times;</button>
+				<h3 class="note-preview-title" data-note-preview-title>note title</h3>
+				<p class="note-preview-content" data-note-preview-content>
+					note content
+				</p>
+			</section>
+
+			<section class="modal note-edit-modal" data-note-edit-modal>
+				<button class="btn close-btn" data-close-modal-button>&times;</button>
+				<input
+					type="text"
+					placeholder="note title..."
+					data-new-note-title-input
+				/>
+				<textarea
+					id=""
+					placeholder="note content..."
+					data-new-note-content-input
+				></textarea>
+				<button class="btn edit-btn" data-edit-note-button>Edit</button>
+			</section>
+		</div>
+
+		<template data-note-item-template>
+			<div class="card note-item">
+				<div class="card-header">
+					<div class="circle delete" data-tooltip="delete"></div>
+					<div class="circle open" data-tooltip="open"></div>
+					<div class="circle edit" data-tooltip="edit"></div>
+				</div>
+				<div class="card-body">
+					<h3 class="note-title"></h3>
+					<p class="note-content"></p>
+				</div>
+				<div class="card-footer"></div>
+			</div>
+		</template>
+	</body>
+</html>

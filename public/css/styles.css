@@ -1,0 +1,298 @@
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	font-size: 10px;
+	--muted-text-clr: hsl(0, 0%, 50%);
+	--bg-clr: hsl(0, 0%, 95%);
+	--card-bg-clr: hsla(0, 0%, 100%, 0.8);
+	--border-radius: 0.1rem;
+	--transition-duration: 200ms;
+}
+
+body {
+	font-family: "Poppins", sans-serif;
+	width: 100%;
+	height: 100vh;
+	background: var(--bg-clr);
+	line-height: 1.5;
+	overflow-x: hidden;
+}
+#app {
+	width: min(95vw, 100rem);
+	margin: 3rem auto;
+}
+.overlay {
+	--scale: 0;
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	inset: 0;
+	transform: scale(var(--scale));
+	background: hsla(0, 0%, 0%, 0.7);
+	z-index: 10;
+}
+.notes-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(28rem, 32rem));
+	justify-items: center;
+	justify-content: center;
+	gap: 2rem;
+	padding-bottom: 3rem;
+}
+.card {
+	width: 100%;
+	height: 22rem;
+	border: 0.1rem solid black;
+	border-radius: calc(var(--border-radius) * 8);
+	background: var(--card-bg-clr);
+	position: relative;
+}
+.card.add-note {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: transform var(--transition-duration) ease-in-out;
+}
+.card.add-note:hover {
+	transform: scale(0.98);
+}
+.btn {
+	font-size: 1rem;
+	background: transparent;
+	cursor: pointer;
+	border: none;
+}
+.add-note-btn {
+	font-size: 4rem;
+	color: hsl(100, 50%, 50%);
+	width: 100%;
+	height: 100%;
+}
+.add-note-btn > i {
+	pointer-events: none;
+}
+.card-header {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	border-top-right-radius: calc(var(--border-radius) * 8);
+	border-top-left-radius: calc(var(--border-radius) * 8);
+	padding: 0.5rem;
+	border-bottom: 0.1rem solid black;
+	background: hsl(0, 0%, 80%);
+}
+.circle {
+	--size: 1.6em;
+	width: var(--size);
+	height: var(--size);
+	border-radius: 100%;
+	margin-right: 0.75rem;
+	cursor: pointer;
+}
+.circle.delete {
+	background: hsl(0, 100%, 61%);
+}
+.circle.delete::before,
+.circle.delete::after,
+.circle.open::after,
+.circle.open::before,
+.circle.edit::after,
+.circle.edit::before {
+	--scale: 0;
+	--tooltip-color: hsl(0, 0%, 20%);
+	--arrow-size: 0.5rem;
+
+	position: absolute;
+	top: -0.25rem;
+	left: 50%;
+	transform: translateX(-50%) translateY(var(--translate-y, 0))
+		scale(var(--scale));
+	color: white;
+	transition: calc(var(--transition-duration) - 100ms) ease-in-out transform;
+	transform-origin: bottom center;
+}
+.circle.delete::before,
+.circle.open::before,
+.circle.edit::before {
+	--translate-y: calc(-100% - var(--arrow-size));
+
+	content: attr(data-tooltip);
+	padding: 0.5rem;
+	width: max-content;
+	letter-spacing: 0.1rem;
+	background: var(--tooltip-color);
+	text-align: center;
+	border-radius: 0.3rem;
+}
+.circle.delete::after,
+.circle.open::after,
+.circle.edit::after {
+	--translate-y: calc(-1 * var(--arrow-size));
+
+	content: "";
+	border: var(--arrow-size) solid transparent;
+	border-top-color: var(--tooltip-color);
+	transform-origin: top center;
+}
+.circle.delete:hover::before,
+.circle.delete:hover::after,
+.circle.open:hover::before,
+.circle.open:hover::after,
+.circle.edit:hover::before,
+.circle.edit:hover::after {
+	--scale: 1;
+}
+.circle.open {
+	background: hsl(39, 100%, 53%);
+}
+.circle.edit {
+	background: hsl(125, 100%, 50%);
+}
+.circle.delete:hover,
+.circle.edit:hover,
+.circle.open:hover {
+	box-shadow: 0 0 0.5rem hsl(0, 0%, 40%);
+}
+.circle.delete,
+.circle.edit,
+.circle.open {
+	position: relative;
+	transition: box-shadow calc(var(--transition-duration) - 100ms) linear;
+}
+.card-body {
+	margin-top: 3rem;
+}
+.note-title {
+	font-size: 2rem;
+	text-transform: capitalize;
+	font-weight: bold;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.note-content {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	word-break: break-all;
+	font-size: 1.4rem;
+	color: var(--muted-text-clr);
+	display: -webkit-box;
+	-webkit-line-clamp: 5;
+	line-clamp: 5;
+	-webkit-box-orient: vertical;
+}
+.card-footer {
+	font-family: "Ubuntu", sans-serif;
+	font-style: italic;
+	font-weight: 600;
+	font-size: 1.2rem;
+	letter-spacing: 0.1rem;
+	border-bottom-left-radius: calc(var(--border-radius) * 8);
+	border-bottom-right-radius: calc(var(--border-radius) * 8);
+	background: hsl(0, 0%, 80%);
+	width: 100%;
+	border-top: 0.1rem solid black;
+	position: absolute;
+	bottom: 0;
+}
+.card-body,
+.card-footer {
+	padding: 0.75rem;
+}
+.modal {
+	--padding-x: 1rem;
+	--padding-y: 0.5rem;
+	--scale: 0;
+	width: min(60vw, 50rem);
+	height: 30rem;
+	display: flex;
+	flex-direction: column;
+	border-radius: calc(var(--border-radius) * 8);
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(var(--scale));
+	background: white;
+	padding: var(--padding-y) var(--padding-x);
+	z-index: 11;
+}
+.note-preview-modal {
+	width: min(90vw, 80rem);
+	height: fit-content;
+}
+.close-btn {
+	color: var(--muted-text-clr);
+	font-size: 3rem;
+	position: absolute;
+	right: var(--padding-x);
+	transition: all 100ms ease-in-out;
+	transform-origin: center;
+}
+.close-btn:hover,
+.close-btn:focus {
+	color: hsl(0, 100%, 61%);
+}
+input {
+	width: 100%;
+	border: 0;
+	border-left: 0.2rem solid hsl(0, 0%, 50%);
+	padding: 0.25rem 1rem;
+	margin: 2.4rem 0 1.5rem 0;
+	font-size: 1.6rem;
+}
+input:focus {
+	outline: none;
+	border-left: 0.2rem solid hsl(0, 0%, 20%);
+}
+textarea {
+	width: 100%;
+	height: 60%;
+	font-size: 1.5rem;
+	resize: none;
+	border: 0;
+	border-left: 0.2rem solid hsl(0, 0%, 50%);
+	padding: 0.25rem 1rem;
+}
+textarea:focus {
+	outline: none;
+	border-left: 0.2rem solid hsl(0, 0%, 20%);
+}
+.save-btn, .edit-btn {
+	font-size: 1.4rem;
+	font-weight: bold;
+	border: 0.2rem solid hsl(125, 63%, 48%);
+	border-radius: 0.3rem;
+	width: calc(100% - calc(2 * var(--padding-x)));
+	padding: 0.5em;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: var(--padding-x);
+	transition: 100ms all ease-in;
+}
+.save-btn:hover,
+.save-btn:focus,
+.edit-btn:hover,
+.edit-btn:focus {
+	color: white;
+	background: hsl(125, 63%, 48%);
+}
+.note-preview-title {
+	border-top: .1rem solid black;
+	margin-top: 3rem;
+	font-size: 2rem;
+	text-transform: capitalize;
+}
+.note-preview-content {
+	font-size: 1.5rem;
+	color: var(--muted-text-clr);
+}
