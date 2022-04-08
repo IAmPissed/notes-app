@@ -1,4 +1,4 @@
-import { addGlobalEventListener, querySelector, formatDateAndTime } from './utils/utils.js';
+import { addGlobalEventListener, querySelector, formatDateAndTime, save } from './utils/utils.js';
 const LOCAL_STORAGE_NOTES_KEY = 'notesapp.notes.list';
 let notes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NOTES_KEY) || '[]');
 let selectedNoteIdForEdit = null;
@@ -24,9 +24,6 @@ const clearElement = (element) => {
         element.removeChild(element.lastElementChild);
     }
 };
-const save = () => {
-    localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
-};
 const renderNotes = () => {
     notes.forEach((note) => {
         const noteItem = noteItemTemplate.content.cloneNode(true);
@@ -42,7 +39,7 @@ const renderNotes = () => {
         notesList.append(noteItem);
     });
 };
-const openModal = () => {
+const openCreateNoteModal = () => {
     const scale = '1';
     overlay.style.setProperty('--scale', scale);
     addNoteModal.style.setProperty('--scale', scale);
@@ -55,7 +52,7 @@ const closeModal = (e) => {
         (_a = modal.parentElement) === null || _a === void 0 ? void 0 : _a.style.setProperty('--scale', '0');
     }
 };
-const closeModalOnSave = () => {
+const closeCreateNoteModal = () => {
     overlay.style.setProperty('--scale', '0');
     addNoteModal.style.setProperty('--scale', '0');
 };
@@ -66,9 +63,9 @@ const createNewNote = () => {
     const { title, content } = { title: noteTitleInput.value, content: noteContentInput.value };
     const note = createNote(title, content);
     notes.push(note);
-    save();
+    save(LOCAL_STORAGE_NOTES_KEY, notes);
     render();
-    closeModalOnSave();
+    closeCreateNoteModal();
     clearFields();
 };
 const createNote = (title, content) => {
@@ -84,18 +81,18 @@ const deleteNote = (e) => {
     const element = e.target;
     const noteId = getNoteId(element);
     notes = notes.filter((note) => note.id !== noteId);
-    save();
+    save(LOCAL_STORAGE_NOTES_KEY, notes);
     render();
 };
 const openNote = (e) => {
     const element = e.target;
     const noteId = getNoteId(element);
     const note = notes.find((note) => note.id === noteId);
+    openPreviewModal(note);
+};
+const openPreviewModal = (note) => {
     notePreviewTitle.innerText = note.title;
     notePreviewContent.innerText = note.content;
-    openPreviewModal();
-};
-const openPreviewModal = () => {
     overlay.style.setProperty('--scale', '1');
     previewModal.style.setProperty('--scale', '1');
 };
@@ -116,7 +113,7 @@ const updateNote = () => {
     let updatedNote = Object.assign(Object.assign({}, selectedNote), { title: newNoteTitleInput.value, content: newNoteContentInput.value, updatedAt: formatDateAndTime(new Date()) });
     notes = notes.filter((note) => note.id !== selectedNoteIdForEdit);
     notes.push(updatedNote);
-    save();
+    save(LOCAL_STORAGE_NOTES_KEY, notes);
     render();
 };
 const getNote = (e) => {
@@ -136,7 +133,7 @@ const areFieldsEmpty = () => {
     return noteTitleInput.value == '' || noteContentInput.value == '';
 };
 addGlobalEventListener('click', '[data-close-modal-button]', closeModal);
-addGlobalEventListener('click', '[data-add-note-button]', openModal);
+addGlobalEventListener('click', '[data-add-note-button]', openCreateNoteModal);
 addGlobalEventListener('click', '[data-overlay]', (e) => {
     overlay.style.setProperty('--scale', '0');
     addNoteModal.style.setProperty('--scale', '0');

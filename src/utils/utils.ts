@@ -28,3 +28,7 @@ export const formatDateAndTime = (date: Date) => {
     const TIME = date.toLocaleString(undefined, { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit'})
     return `${DAY_OF_WEEK}, ${MONTHS[date.getMonth()]} ${DAY_OF_MONTH}, ${YEAR}, at ${TIME}`
 }
+
+export const save = (key: string, value: []) => {
+    localStorage.setItem(key, JSON.stringify(value))
+}

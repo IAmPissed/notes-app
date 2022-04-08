@@ -1,4 +1,4 @@
-import { addGlobalEventListener, querySelector, formatDateAndTime } from './utils/utils.js'
+import { addGlobalEventListener, querySelector, formatDateAndTime, save } from './utils/utils.js'
 
 type note = {
     title: string
@@ -36,9 +36,7 @@ const clearElement = (element: HTMLElement) => {
         element.removeChild(element.lastElementChild)
     }
 }
-const save = () => {
-    localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes))
-}
+
 const renderNotes = () => {
     notes.forEach((note: note) => {
         const noteItem = noteItemTemplate.content.cloneNode(true) as HTMLDivElement
@@ -55,7 +53,7 @@ const renderNotes = () => {
     })
 }
 
-const openModal = () => {
+const openCreateNoteModal = () => {
     const scale = '1'
     overlay.style.setProperty('--scale', scale)
     addNoteModal.style.setProperty('--scale', scale)
@@ -68,7 +66,7 @@ const closeModal = (e: Event)=> {
         modal.parentElement?.style.setProperty('--scale', '0')
     }
 }
-const closeModalOnSave = () => {
+const closeCreateNoteModal = () => {
     overlay.style.setProperty('--scale', '0')
     addNoteModal.style.setProperty('--scale', '0')
 }
@@ -82,9 +80,9 @@ const createNewNote = () => {
     const {title, content} = {title: noteTitleInput.value, content: noteContentInput.value}
     const note = createNote(title, content)
     notes.push(note)
-    save()
+    save(LOCAL_STORAGE_NOTES_KEY, notes)
     render()
-    closeModalOnSave()
+    closeCreateNoteModal()
     clearFields()
 }
 
@@ -104,23 +102,24 @@ const deleteNote = (e: Event) => {
     const element = e.target as HTMLElement
     const noteId = getNoteId(element)
     notes = notes.filter((note: note) => note.id !== noteId)
-    save()
+    save(LOCAL_STORAGE_NOTES_KEY, notes)
     render()
 }
+
 const openNote = (e: Event) => {
     const element = e.target as HTMLElement
     const noteId = getNoteId(element)
     const note = notes.find((note: note) => note.id === noteId)
+    openPreviewModal(note)
+}
+const openPreviewModal = (note: note) => {
     notePreviewTitle.innerText = note.title
     notePreviewContent.innerText = note.content
-    openPreviewModal()
-}
-    
-
-const openPreviewModal = () => {
     overlay.style.setProperty('--scale', '1')
     previewModal.style.setProperty('--scale', '1')
 }
+
+
 const openEditModal = (e: Event) => {
     const note: note = getNote(e)
     overlay.style.setProperty('--scale', '1')
@@ -143,7 +142,7 @@ const updateNote = () => {
     }
     notes = notes.filter((note:note) => note.id !== selectedNoteIdForEdit)
     notes.push(updatedNote)
-    save()
+    save(LOCAL_STORAGE_NOTES_KEY, notes)
     render()
 }
 
@@ -167,7 +166,7 @@ const areFieldsEmpty = () => {
 }
 
 addGlobalEventListener('click', '[data-close-modal-button]', closeModal)
-addGlobalEventListener('click', '[data-add-note-button]', openModal)
+addGlobalEventListener('click', '[data-add-note-button]', openCreateNoteModal)
 addGlobalEventListener('click', '[data-overlay]', (e: Event) => {
     overlay.style.setProperty('--scale', '0')
     addNoteModal.style.setProperty('--scale', '0')
