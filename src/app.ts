@@ -164,6 +164,9 @@ const getNoteId = (element: HTMLElement) => {
 const areFieldsEmpty = () => {
     return noteTitleInput.value == '' || noteContentInput.value == ''
 }
+const areEditModalFieldsEmpty = () => {
+    return newNoteContentInput.value === '' || newNoteTitleInput.value === ''
+}
 
 const isDeleteCircle = (e: Event) => {
     return e.target instanceof HTMLElement && e.target.dataset.tooltip === 'delete'
@@ -188,7 +191,7 @@ addGlobalEventListener('click', '[data-save-note-button]', () => {
     createNewNote()
 })
 addGlobalEventListener('click', '[data-edit-note-button]', (e: Event) => {
-    if (newNoteContentInput.value === '' || newNoteTitleInput.value === '') return
+    if (areEditModalFieldsEmpty()) return
     updateNote()
     closeEditModal()
 })
