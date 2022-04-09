@@ -8,6 +8,11 @@ type note = {
     createdAt: string
     updatedAt: string
 }
+type noteItemElement = {
+    title: HTMLElement,
+    content: HTMLElement,
+    timestamps: HTMLElement
+}
 
 const LOCAL_STORAGE_NOTES_KEY: string = 'notesapp.notes.list'
 let notes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NOTES_KEY) || '[]')
@@ -43,14 +48,21 @@ const renderNotes = () => {
         if (noteItem.firstElementChild instanceof HTMLElement) {
             noteItem.firstElementChild.dataset.noteId = note.id
         }
-        const title = noteItem.querySelector('.note-title') as HTMLElement
-        const content = noteItem.querySelector('.note-content') as HTMLElement
-        const timestamps = noteItem.querySelector('.card-footer') as HTMLElement
-        title.innerText = note.title
-        content.innerText = note.content
-        timestamps.innerText = note.updatedAt
+        setNoteItemElements(grabNoteItemElements(noteItem), note)
         notesList.append(noteItem)
     })
+}
+const grabNoteItemElements = (noteItem: HTMLElement) => {
+    const title = noteItem.querySelector('.note-title') as HTMLElement
+    const content = noteItem.querySelector('.note-content') as HTMLElement
+    const timestamps = noteItem.querySelector('.card-footer') as HTMLElement
+    return { title, content, timestamps }
+}
+const setNoteItemElements = (elements: noteItemElement, note: note) => {
+    const { title, content, timestamps } = elements
+    title.innerText = note.title
+    content.innerText = note.content
+    timestamps.innerText = note.updatedAt
 }
 
 const openCreateNoteModal = () => {
