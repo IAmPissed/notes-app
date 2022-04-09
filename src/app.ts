@@ -165,6 +165,16 @@ const areFieldsEmpty = () => {
     return noteTitleInput.value == '' || noteContentInput.value == ''
 }
 
+const isDeleteCircle = (e: Event) => {
+    return e.target instanceof HTMLElement && e.target.dataset.tooltip === 'delete'
+}
+const isOpenCircle = (e: Event) => {
+    return e.target instanceof HTMLElement && e.target.dataset.tooltip === 'open'
+}
+const isEditCircle = (e: Event) => {
+    return e.target instanceof HTMLElement && e.target.dataset.tooltip === 'edit'
+}
+
 addGlobalEventListener('click', '[data-close-modal-button]', closeModal)
 addGlobalEventListener('click', '[data-add-note-button]', openCreateNoteModal)
 addGlobalEventListener('click', '[data-overlay]', (e: Event) => {
@@ -183,9 +193,9 @@ addGlobalEventListener('click', '[data-edit-note-button]', (e: Event) => {
     closeEditModal()
 })
 addGlobalEventListener('click', '.circle', (e: Event) => {
-    if (e.target instanceof HTMLElement && e.target.matches('.delete')) deleteNote(e)
-    if (e.target instanceof HTMLElement && e.target.matches('.open')) openNote(e)
-    if (e.target instanceof HTMLElement && e.target.matches('.edit')) openEditModal(e)
+    if (isDeleteCircle(e)) deleteNote(e)
+    if (isOpenCircle(e)) openNote(e)
+    if (isEditCircle(e)) openEditModal(e)
 })
 
 
